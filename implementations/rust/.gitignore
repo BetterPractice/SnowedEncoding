@@ -1,0 +1,5 @@
+# Rust build artifacts
+target/
+
+# Cargo lock is kept for binaries; libraries typically omit it.
+# This project is a library, so Cargo.lock is intentionally not ignored.

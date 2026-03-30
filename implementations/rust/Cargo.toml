@@ -1,0 +1,28 @@
+[package]
+name = "snowed"
+version = "0.1.0"
+edition = "2021"
+description = "Snowed binary serialization format"
+license = "MIT"
+
+[features]
+default = []
+rust_decimal = ["dep:rust_decimal"]
+serde = ["dep:serde"]
+
+[dependencies]
+rust_decimal = { version = "1", optional = true, default-features = false }
+serde = { version = "1", optional = true, default-features = false }
+
+[dev-dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_bytes = "0.11"
+rust_decimal = { version = "1", default-features = false }
+
+[[test]]
+name = "serde_round_trip"
+required-features = ["serde"]
+
+[[test]]
+name = "rust_decimal_conversions"
+required-features = ["rust_decimal"]

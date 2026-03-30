@@ -1,0 +1,12 @@
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go workspace (if used locally)
+go.work
+go.work.sum

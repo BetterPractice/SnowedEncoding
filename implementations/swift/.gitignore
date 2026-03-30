@@ -1,0 +1,13 @@
+# Swift / Xcode build artifacts
+.build/
+*.o
+*.d
+*.swp
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+*.xccheckout
+*.moved-aside

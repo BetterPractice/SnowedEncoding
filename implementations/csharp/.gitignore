@@ -1,0 +1,26 @@
+# .NET build artifacts
+bin/
+obj/
+out/
+
+# NuGet
+*.nupkg
+*.snupkg
+project.lock.json
+packages/
+.nuget/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+
+# Test results
+TestResults/
+coverage/
+*.trx
+*.coverage
+*.coveragexml

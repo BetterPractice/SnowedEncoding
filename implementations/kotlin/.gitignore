@@ -1,0 +1,14 @@
+# Gradle build artifacts
+build/
+.gradle/
+out/
+
+# Gradle wrapper jar (keep gradlew scripts, ignore the jar)
+gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+local.properties
