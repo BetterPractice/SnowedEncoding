@@ -1,11 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <PackageId>BetterPractice.Snowed</PackageId>
+    <Description>Snowed binary encoding for .NET: a self-describing, streaming-friendly wire format with native Binary, UUID, DateTime, and Decimal types. Includes the serializer, a document object model, and HttpClient extensions.</Description>
   </PropertyGroup>
 
   <ItemGroup>

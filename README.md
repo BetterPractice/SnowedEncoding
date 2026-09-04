@@ -20,6 +20,15 @@ A binary data serialization format optimized for nested structures containing bi
 
 All implementations target zero runtime dependencies beyond the host language's standard library.
 
+### Packages
+
+| Language | Package | Install |
+|----------|---------|---------|
+| C#       | [BetterPractice.Snowed](https://www.nuget.org/packages/BetterPractice.Snowed) | `dotnet add package BetterPractice.Snowed` |
+| C#       | [BetterPractice.Snowed.AspNetCore](https://www.nuget.org/packages/BetterPractice.Snowed.AspNetCore) | `dotnet add package BetterPractice.Snowed.AspNetCore` |
+
+The C# packages are published from this repository by a `v*` tag (see `.github/workflows/publish.yml`). Versions below 1.0 signal that the library API is not yet committed; the wire format itself is governed by the specification.
+
 ## Conformance Testing
 
 Cross-implementation test vectors are in [tests/conformance](tests/conformance). Each implementation is expected to provide a test runner that validates against these vectors.

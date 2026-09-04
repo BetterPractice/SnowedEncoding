@@ -1,0 +1,96 @@
+name: Publish
+
+# Builds and tests the C# implementation, packs BetterPractice.Snowed and
+# BetterPractice.Snowed.AspNetCore, and pushes them to nuget.org. Triggered by a version tag
+# (v0.1.0 → package version 0.1.0).
+#
+# Publishing uses nuget.org Trusted Publishing: the job's GitHub OIDC token is exchanged for a
+# one-hour API key, so no long-lived key is stored anywhere. It requires a trusted publishing
+# policy on nuget.org for this repository and workflow file (glob BetterPractice.Snowed*), and
+# the NUGET_USER repository secret holding the nuget.org profile name that owns the policy.
+# Without NUGET_USER the workflow still builds and validates everything and uploads the packages
+# as an artifact.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  publish:
+    name: Test, pack, publish
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # GitHub OIDC token for nuget.org Trusted Publishing
+      contents: read
+    defaults:
+      run:
+        working-directory: implementations/csharp
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Resolve package version from tag
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "VERSION_ARG=-p:Version=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+            echo "Publishing version ${GITHUB_REF_NAME#v}"
+          else
+            echo "Not a tag build; using the version declared in Directory.Build.props."
+          fi
+
+      - name: Build
+        run: dotnet build Snowed.sln -c Release -p:ContinuousIntegrationBuild=true $VERSION_ARG
+
+      - name: Test
+        run: dotnet test Snowed.Tests -c Release --no-build --logger "console;verbosity=normal"
+
+      - name: Pack
+        run: |
+          dotnet pack Snowed/Snowed.csproj -c Release --no-build -o nuget -p:ContinuousIntegrationBuild=true $VERSION_ARG
+          dotnet pack Snowed.AspNetCore/Snowed.AspNetCore.csproj -c Release --no-build -o nuget -p:ContinuousIntegrationBuild=true $VERSION_ARG
+          ls -l nuget/
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget
+          path: implementations/csharp/nuget/*.*nupkg
+          if-no-files-found: error
+
+      - name: Check publishing configuration
+        id: cfg
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          NUGET_USER: ${{ secrets.NUGET_USER }}
+        run: |
+          if [ -z "$NUGET_USER" ]; then
+            echo "::warning::NUGET_USER secret is not set. Packages were built and uploaded as the 'nuget' artifact but not pushed. Create a Trusted Publishing policy on nuget.org, set NUGET_USER, and re-run this workflow to publish."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Requested immediately before the push: the exchanged key is valid for one hour.
+      - name: NuGet login (OIDC → short-lived API key)
+        if: steps.cfg.outputs.enabled == 'true'
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push to nuget.org
+        if: steps.cfg.outputs.enabled == 'true'
+        run: |
+          dotnet nuget push 'nuget/*.nupkg' --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json --skip-duplicate
