@@ -1,0 +1,153 @@
+{
+  "suite": "Forward Compatibility",
+  "cases": [
+    {
+      "name": "unknown_null_range",
+      "description": "0x01 rounds down to Null",
+      "hex": "01",
+      "decoded": {
+        "type": "null",
+        "value": null
+      },
+      "canonical": false
+    },
+    {
+      "name": "unknown_int64_range",
+      "description": "0x06 rounds down to Int64",
+      "hex": "06 2A 00 00 00 00 00 00 00",
+      "decoded": {
+        "type": "int64",
+        "value": 42
+      },
+      "canonical": false
+    },
+    {
+      "name": "unknown_int64_range_top",
+      "description": "0x07 rounds down to Int64",
+      "hex": "07 FB FF FF FF FF FF FF FF",
+      "decoded": {
+        "type": "int64",
+        "value": -5
+      },
+      "canonical": false
+    },
+    {
+      "name": "unknown_float64_range",
+      "description": "0x0A rounds down to Float64, not DateTime",
+      "hex": "0A 00 00 00 00 00 00 F8 3F",
+      "decoded": {
+        "type": "float64",
+        "value": 1.5
+      },
+      "canonical": false
+    },
+    {
+      "name": "unknown_float64_range_top",
+      "description": "0x0F rounds down to Float64",
+      "hex": "0F 00 00 00 00 00 00 00 C0",
+      "decoded": {
+        "type": "float64",
+        "value": -2.0
+      },
+      "canonical": false
+    },
+    {
+      "name": "unknown_binary_range",
+      "description": "0x14 rounds down to Binary, not UUID",
+      "hex": "14 02 00 00 00 00 00 00 00 01 02",
+      "decoded": {
+        "type": "binary",
+        "value": "AQI="
+      },
+      "canonical": false
+    },
+    {
+      "name": "unknown_binary_range_top",
+      "description": "0x3F rounds down to Binary",
+      "hex": "3F 03 00 00 00 00 00 00 00 78 79 7A",
+      "decoded": {
+        "type": "binary",
+        "value": "eHl6"
+      },
+      "canonical": false
+    },
+    {
+      "name": "unknown_array_range",
+      "description": "0x41 rounds down to Array",
+      "hex": "41 03 FF",
+      "decoded": {
+        "type": "array",
+        "value": [
+          {
+            "type": "bool",
+            "value": true
+          }
+        ]
+      },
+      "canonical": false
+    },
+    {
+      "name": "unknown_array_range_top",
+      "description": "0x7F rounds down to Array",
+      "hex": "7F FF",
+      "decoded": {
+        "type": "array",
+        "value": []
+      },
+      "canonical": false
+    },
+    {
+      "name": "unknown_object_range",
+      "description": "0xC0 rounds down to Object",
+      "hex": "C0 01 78 04 01 00 00 00 00 00 00 00 00",
+      "decoded": {
+        "type": "object",
+        "value": {
+          "x": {
+            "type": "int64",
+            "value": 1
+          }
+        }
+      },
+      "canonical": false
+    },
+    {
+      "name": "unknown_object_range_top",
+      "description": "0xFE rounds down to Object",
+      "hex": "FE 00",
+      "decoded": {
+        "type": "object",
+        "value": {}
+      },
+      "canonical": false
+    },
+    {
+      "name": "unknown_nested",
+      "description": "Unknown type bytes inside a container are rounded down too",
+      "hex": "40 0B 00 00 00 00 00 00 04 40 80 01 6B 20 01 00 00 00 00 00 00 00 AA 00 01 FF",
+      "decoded": {
+        "type": "array",
+        "value": [
+          {
+            "type": "float64",
+            "value": 2.5
+          },
+          {
+            "type": "object",
+            "value": {
+              "k": {
+                "type": "binary",
+                "value": "qg=="
+              }
+            }
+          },
+          {
+            "type": "null",
+            "value": null
+          }
+        ]
+      },
+      "canonical": false
+    }
+  ]
+}

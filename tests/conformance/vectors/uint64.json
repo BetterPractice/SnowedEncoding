@@ -1,0 +1,50 @@
+{
+  "suite": "UInt64",
+  "cases": [
+    {
+      "name": "zero",
+      "description": "UInt64 0",
+      "hex": "05 00 00 00 00 00 00 00 00",
+      "decoded": {
+        "type": "uint64",
+        "value": 0
+      }
+    },
+    {
+      "name": "positive",
+      "description": "UInt64 42",
+      "hex": "05 2A 00 00 00 00 00 00 00",
+      "decoded": {
+        "type": "uint64",
+        "value": 42
+      }
+    },
+    {
+      "name": "int64_max",
+      "description": "UInt64 equal to Int64 max",
+      "hex": "05 FF FF FF FF FF FF FF 7F",
+      "decoded": {
+        "type": "uint64",
+        "value": "9223372036854775807"
+      }
+    },
+    {
+      "name": "above_int64_max",
+      "description": "UInt64 2^63 (exceeds Int64 range)",
+      "hex": "05 00 00 00 00 00 00 00 80",
+      "decoded": {
+        "type": "uint64",
+        "value": "9223372036854775808"
+      }
+    },
+    {
+      "name": "max",
+      "description": "UInt64 max (spec §5.4 example)",
+      "hex": "05 FF FF FF FF FF FF FF FF",
+      "decoded": {
+        "type": "uint64",
+        "value": "18446744073709551615"
+      }
+    }
+  ]
+}

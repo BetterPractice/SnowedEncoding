@@ -1,0 +1,81 @@
+{
+  "suite": "Array",
+  "cases": [
+    {
+      "name": "empty",
+      "description": "Empty array",
+      "hex": "40 FF",
+      "decoded": {
+        "type": "array",
+        "value": []
+      }
+    },
+    {
+      "name": "spec_example",
+      "description": "[true, 42] (spec §5.11 example)",
+      "hex": "40 03 04 2A 00 00 00 00 00 00 00 FF",
+      "decoded": {
+        "type": "array",
+        "value": [
+          {
+            "type": "bool",
+            "value": true
+          },
+          {
+            "type": "int64",
+            "value": 42
+          }
+        ]
+      }
+    },
+    {
+      "name": "mixed",
+      "description": "Mixed element types",
+      "hex": "40 00 11 01 00 00 00 00 00 00 00 61 08 00 00 00 00 00 00 F8 3F 10 01 00 00 00 00 00 00 00 01 FF",
+      "decoded": {
+        "type": "array",
+        "value": [
+          {
+            "type": "null",
+            "value": null
+          },
+          {
+            "type": "string",
+            "value": "a"
+          },
+          {
+            "type": "float64",
+            "value": 1.5
+          },
+          {
+            "type": "binary",
+            "value": "AQ=="
+          }
+        ]
+      }
+    },
+    {
+      "name": "nested",
+      "description": "Nested arrays [[], [null]]",
+      "hex": "40 40 FF 40 00 FF FF",
+      "decoded": {
+        "type": "array",
+        "value": [
+          {
+            "type": "array",
+            "value": []
+          },
+          {
+            "type": "array",
+            "value": [
+              {
+                "type": "null",
+                "value": null
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

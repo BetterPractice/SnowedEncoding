@@ -1,0 +1,14 @@
+{
+  "suite": "Null",
+  "cases": [
+    {
+      "name": "null",
+      "description": "Null value (0x00)",
+      "hex": "00",
+      "decoded": {
+        "type": "null",
+        "value": null
+      }
+    }
+  ]
+}

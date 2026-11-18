@@ -1,0 +1,141 @@
+{
+  "suite": "Nested",
+  "cases": [
+    {
+      "name": "object_in_array",
+      "description": "Array containing an object: [{\"id\": 7}]",
+      "hex": "40 80 02 69 64 04 07 00 00 00 00 00 00 00 00 FF",
+      "decoded": {
+        "type": "array",
+        "value": [
+          {
+            "type": "object",
+            "value": {
+              "id": {
+                "type": "int64",
+                "value": 7
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "array_in_object",
+      "description": "{\"tags\": [\"a\", \"b\"]}",
+      "hex": "80 04 74 61 67 73 40 11 01 00 00 00 00 00 00 00 61 11 01 00 00 00 00 00 00 00 62 FF 00",
+      "decoded": {
+        "type": "object",
+        "value": {
+          "tags": {
+            "type": "array",
+            "value": [
+              {
+                "type": "string",
+                "value": "a"
+              },
+              {
+                "type": "string",
+                "value": "b"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "deep",
+      "description": "Four levels: {\"a\": [{\"b\": [null]}]}",
+      "hex": "80 01 61 40 80 01 62 40 00 FF 00 FF 00",
+      "decoded": {
+        "type": "object",
+        "value": {
+          "a": {
+            "type": "array",
+            "value": [
+              {
+                "type": "object",
+                "value": {
+                  "b": {
+                    "type": "array",
+                    "value": [
+                      {
+                        "type": "null",
+                        "value": null
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "record",
+      "description": "A realistic record mixing every type",
+      "hex": "80 02 69 64 13 10 00 00 00 00 00 00 00 55 0E 84 00 E2 9B 41 D4 A7 16 44 66 55 44 00 00 04 6E 61 6D 65 11 03 00 00 00 00 00 00 00 41 64 61 06 61 63 74 69 76 65 03 05 63 6F 75 6E 74 04 03 00 00 00 00 00 00 00 03 62 69 67 05 FF FF FF FF FF FF FF FF 05 72 61 74 69 6F 08 00 00 00 00 00 00 D0 3F 05 70 72 69 63 65 12 05 00 00 00 00 00 00 00 31 39 2E 39 39 07 63 72 65 61 74 65 64 09 00 00 80 56 FE BC 78 42 06 61 76 61 74 61 72 10 04 00 00 00 00 00 00 00 89 50 4E 47 06 70 61 72 65 6E 74 00 08 63 68 69 6C 64 72 65 6E 40 80 04 6E 61 6D 65 11 02 00 00 00 00 00 00 00 42 6F 00 FF 00",
+      "decoded": {
+        "type": "object",
+        "value": {
+          "id": {
+            "type": "uuid",
+            "value": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "name": {
+            "type": "string",
+            "value": "Ada"
+          },
+          "active": {
+            "type": "bool",
+            "value": true
+          },
+          "count": {
+            "type": "int64",
+            "value": 3
+          },
+          "big": {
+            "type": "uint64",
+            "value": "18446744073709551615"
+          },
+          "ratio": {
+            "type": "float64",
+            "value": 0.25
+          },
+          "price": {
+            "type": "decimal",
+            "value": "19.99"
+          },
+          "created": {
+            "type": "datetime",
+            "value": 1700000000000
+          },
+          "avatar": {
+            "type": "binary",
+            "value": "iVBORw=="
+          },
+          "parent": {
+            "type": "null",
+            "value": null
+          },
+          "children": {
+            "type": "array",
+            "value": [
+              {
+                "type": "object",
+                "value": {
+                  "name": {
+                    "type": "string",
+                    "value": "Bo"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "canonical": false
+    }
+  ]
+}

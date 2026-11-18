@@ -1,0 +1,104 @@
+{
+  "suite": "Object",
+  "cases": [
+    {
+      "name": "empty",
+      "description": "Empty object",
+      "hex": "80 00",
+      "decoded": {
+        "type": "object",
+        "value": {}
+      }
+    },
+    {
+      "name": "spec_example",
+      "description": "{\"x\": 1} (spec §5.12 example)",
+      "hex": "80 01 78 04 01 00 00 00 00 00 00 00 00",
+      "decoded": {
+        "type": "object",
+        "value": {
+          "x": {
+            "type": "int64",
+            "value": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "sentinel_terminated",
+      "description": "Object ended by Sentinel in value position; the dangling key is discarded",
+      "hex": "80 01 78 04 01 00 00 00 00 00 00 00 08 64 61 6E 67 6C 69 6E 67 FF",
+      "decoded": {
+        "type": "object",
+        "value": {
+          "x": {
+            "type": "int64",
+            "value": 1
+          }
+        }
+      },
+      "canonical": false
+    },
+    {
+      "name": "sentinel_terminated_empty",
+      "description": "Object with only a dangling key before the Sentinel is empty",
+      "hex": "80 08 64 61 6E 67 6C 69 6E 67 FF",
+      "decoded": {
+        "type": "object",
+        "value": {}
+      },
+      "canonical": false
+    },
+    {
+      "name": "max_key_length",
+      "description": "255-byte key: key length 0xFF is a length, not a Sentinel",
+      "hex": "80 FF 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 6B 03 00",
+      "decoded": {
+        "type": "object",
+        "value": {
+          "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk": {
+            "type": "bool",
+            "value": true
+          }
+        }
+      }
+    },
+    {
+      "name": "unicode_key",
+      "description": "Key with multi-byte UTF-8",
+      "hex": "80 05 63 61 66 C3 A9 00 00",
+      "decoded": {
+        "type": "object",
+        "value": {
+          "café": {
+            "type": "null",
+            "value": null
+          }
+        }
+      }
+    },
+    {
+      "name": "multiple_keys",
+      "description": "Several keys with different value types",
+      "hex": "80 01 61 04 01 00 00 00 00 00 00 00 01 62 11 03 00 00 00 00 00 00 00 74 77 6F 01 63 02 00",
+      "decoded": {
+        "type": "object",
+        "value": {
+          "a": {
+            "type": "int64",
+            "value": 1
+          },
+          "b": {
+            "type": "string",
+            "value": "two"
+          },
+          "c": {
+            "type": "bool",
+            "value": false
+          }
+        }
+      },
+      "canonical": false
+    }
+  ]
+}

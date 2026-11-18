@@ -1,0 +1,107 @@
+{
+  "suite": "Invalid Input",
+  "cases": [
+    {
+      "name": "empty_input",
+      "description": "No bytes at all",
+      "hex": "",
+      "error": true
+    },
+    {
+      "name": "sentinel_root",
+      "description": "Sentinel is not a value (§5.13)",
+      "hex": "FF",
+      "error": true
+    },
+    {
+      "name": "unterminated_array",
+      "description": "Array with an element and no Sentinel",
+      "hex": "40 03",
+      "error": true
+    },
+    {
+      "name": "truncated_int64",
+      "description": "Int64 with only 4 payload bytes",
+      "hex": "04 01 02 03 04",
+      "error": true
+    },
+    {
+      "name": "truncated_float64",
+      "description": "Float64 with only 7 payload bytes",
+      "hex": "08 00 00 00 00 00 00 00",
+      "error": true
+    },
+    {
+      "name": "truncated_length",
+      "description": "Binary with a 3-byte length field",
+      "hex": "10 01 00 00",
+      "error": true
+    },
+    {
+      "name": "truncated_payload",
+      "description": "Binary claiming 4 bytes with only 2 present",
+      "hex": "10 04 00 00 00 00 00 00 00 DE AD",
+      "error": true
+    },
+    {
+      "name": "huge_length",
+      "description": "Binary claiming 2^63 bytes",
+      "hex": "10 00 00 00 00 00 00 00 80",
+      "error": true
+    },
+    {
+      "name": "invalid_utf8_string",
+      "description": "String with an invalid UTF-8 byte (0xFF)",
+      "hex": "11 03 00 00 00 00 00 00 00 61 FF 62",
+      "error": true
+    },
+    {
+      "name": "invalid_utf8_overlong",
+      "description": "String with an overlong encoding of '/' (C0 AF)",
+      "hex": "11 02 00 00 00 00 00 00 00 C0 AF",
+      "error": true
+    },
+    {
+      "name": "invalid_utf8_surrogate",
+      "description": "String with an encoded UTF-16 surrogate (ED A0 80)",
+      "hex": "11 03 00 00 00 00 00 00 00 ED A0 80",
+      "error": true
+    },
+    {
+      "name": "invalid_utf8_key",
+      "description": "Object key with invalid UTF-8",
+      "hex": "80 01 FF 00 00",
+      "error": true
+    },
+    {
+      "name": "uuid_short",
+      "description": "UUID with length 15",
+      "hex": "13 0F 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+      "error": true
+    },
+    {
+      "name": "uuid_long",
+      "description": "UUID with length 17",
+      "hex": "13 11 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+      "error": true
+    },
+    {
+      "name": "truncated_object_key",
+      "description": "Object key length 5 with only 2 key bytes",
+      "hex": "80 05 61 62",
+      "error": true
+    },
+    {
+      "name": "unterminated_object",
+      "description": "Object with a key-value pair and no terminator",
+      "hex": "80 01 78 00",
+      "error": true
+    },
+    {
+      "name": "truncated_nested",
+      "description": "Array ending inside a nested object",
+      "hex": "40 80 01 78",
+      "error": true
+    }
+  ]
+}

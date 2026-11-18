@@ -91,7 +91,7 @@ When a parser encounters a type indicator byte that is **not** in the defined ty
 | 0x01 | Null (0x00) | Single byte; return Null |
 | 0x06 | Int64 (0x04) | Read 8 bytes; return as Int64 |
 | 0x0A | Float64 (0x08) | Read 8 bytes; return as Float64 |
-| 0x12 | Binary (0x10) | Read 8-byte length, then that many bytes; return as Binary |
+| 0x14 | Binary (0x10) | Read 8-byte length, then that many bytes; return as Binary |
 | 0x41 | Array (0x40) | Read elements until Sentinel; return as Array |
 | 0xC0 | Object (0x80) | Read key-value pairs until terminator; return as Object |
 

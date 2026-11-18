@@ -1,0 +1,68 @@
+{
+  "suite": "Decimal",
+  "cases": [
+    {
+      "name": "zero",
+      "description": "Zero",
+      "hex": "12 01 00 00 00 00 00 00 00 30",
+      "decoded": {
+        "type": "decimal",
+        "value": "0"
+      }
+    },
+    {
+      "name": "one",
+      "description": "Integer value",
+      "hex": "12 01 00 00 00 00 00 00 00 31",
+      "decoded": {
+        "type": "decimal",
+        "value": "1"
+      }
+    },
+    {
+      "name": "one_point_five",
+      "description": "Simple fraction",
+      "hex": "12 03 00 00 00 00 00 00 00 31 2E 35",
+      "decoded": {
+        "type": "decimal",
+        "value": "1.5"
+      }
+    },
+    {
+      "name": "negative",
+      "description": "Negative fraction",
+      "hex": "12 08 00 00 00 00 00 00 00 2D 33 2E 31 34 31 35 39",
+      "decoded": {
+        "type": "decimal",
+        "value": "-3.14159"
+      }
+    },
+    {
+      "name": "small",
+      "description": "Leading zero before the decimal point",
+      "hex": "12 05 00 00 00 00 00 00 00 30 2E 30 30 31",
+      "decoded": {
+        "type": "decimal",
+        "value": "0.001"
+      }
+    },
+    {
+      "name": "large",
+      "description": "Integer with trailing zeros (no exponent)",
+      "hex": "12 07 00 00 00 00 00 00 00 31 30 30 30 30 30 30",
+      "decoded": {
+        "type": "decimal",
+        "value": "1000000"
+      }
+    },
+    {
+      "name": "high_precision",
+      "description": "28 significant digits",
+      "hex": "12 1D 00 00 00 00 00 00 00 31 32 33 34 35 36 37 38 39 30 31 32 33 34 35 36 37 38 39 2E 30 31 32 33 34 35 36 37 38",
+      "decoded": {
+        "type": "decimal",
+        "value": "1234567890123456789.012345678"
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "suite": "String",
+  "cases": [
+    {
+      "name": "empty",
+      "description": "Empty string",
+      "hex": "11 00 00 00 00 00 00 00 00",
+      "decoded": {
+        "type": "string",
+        "value": ""
+      }
+    },
+    {
+      "name": "hello",
+      "description": "ASCII string (spec §5.8 example)",
+      "hex": "11 05 00 00 00 00 00 00 00 68 65 6C 6C 6F",
+      "decoded": {
+        "type": "string",
+        "value": "hello"
+      }
+    },
+    {
+      "name": "unicode",
+      "description": "Multi-byte UTF-8: 2-, 3- and 4-byte sequences; length is in bytes",
+      "hex": "11 19 00 00 00 00 00 00 00 53 6E 6F 77 65 64 20 E2 9D 84 20 E9 9B AA 20 63 61 66 C3 A9 20 F0 9F 98 80",
+      "decoded": {
+        "type": "string",
+        "value": "Snowed ❄ 雪 café 😀"
+      }
+    },
+    {
+      "name": "embedded_nul",
+      "description": "String containing U+0000",
+      "hex": "11 03 00 00 00 00 00 00 00 61 00 62",
+      "decoded": {
+        "type": "string",
+        "value": "a\u0000b"
+      }
+    }
+  ]
+}
