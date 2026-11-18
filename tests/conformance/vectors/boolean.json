@@ -1,0 +1,23 @@
+{
+  "suite": "Boolean",
+  "cases": [
+    {
+      "name": "false",
+      "description": "Boolean False (0x02)",
+      "hex": "02",
+      "decoded": {
+        "type": "bool",
+        "value": false
+      }
+    },
+    {
+      "name": "true",
+      "description": "Boolean True (0x03)",
+      "hex": "03",
+      "decoded": {
+        "type": "bool",
+        "value": true
+      }
+    }
+  ]
+}

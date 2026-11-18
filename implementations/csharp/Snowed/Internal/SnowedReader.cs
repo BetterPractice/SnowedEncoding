@@ -6,6 +6,11 @@ namespace Snowed.Internal;
 /// <summary>Parses a single Snowed value from a byte array.</summary>
 internal sealed class SnowedReader
 {
+    // Encoding.UTF8 silently substitutes U+FFFD for invalid sequences; the spec (§5.8, §6)
+    // requires decoders to reject them, so decode with an encoding that throws instead.
+    private static readonly UTF8Encoding StrictUtf8 =
+        new(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
+
     private readonly byte[] _data;
     private int _pos;
     private readonly int _maxDepth;
@@ -76,14 +81,14 @@ internal sealed class SnowedReader
 
     private SnowedValue ParseString(byte[] utf8)
     {
-        try { return SnowedValue.Create(Encoding.UTF8.GetString(utf8)); }
+        try { return SnowedValue.Create(StrictUtf8.GetString(utf8)); }
         catch (DecoderFallbackException ex) { throw Corrupted("Invalid UTF-8 in String value", ex); }
     }
 
     private SnowedValue ParseDecimal(byte[] utf8)
     {
         string s;
-        try { s = Encoding.UTF8.GetString(utf8); }
+        try { s = StrictUtf8.GetString(utf8); }
         catch (DecoderFallbackException ex) { throw Corrupted("Invalid UTF-8 in Decimal value", ex); }
         if (!decimal.TryParse(s, System.Globalization.NumberStyles.Any,
                               System.Globalization.CultureInfo.InvariantCulture, out decimal d))
@@ -115,7 +120,7 @@ internal sealed class SnowedReader
             if (keyLen == 0x00) break;                                  // zero-length key
             byte[] keyBytes = ReadBytes(keyLen);
             string key;
-            try { key = Encoding.UTF8.GetString(keyBytes); }
+            try { key = StrictUtf8.GetString(keyBytes); }
             catch (DecoderFallbackException ex) { throw Corrupted("Invalid UTF-8 in object key", ex); }
 
             byte valueTypeByte = ReadByte();

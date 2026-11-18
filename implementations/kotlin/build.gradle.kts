@@ -34,6 +34,8 @@ kotlin {
         jvmTest {
             dependencies {
                 implementation("org.junit.jupiter:junit-jupiter:5.10.2")
+                // Conformance runner parses the shared JSON test vectors
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
             }
         }
     }

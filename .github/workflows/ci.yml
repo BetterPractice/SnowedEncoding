@@ -1,5 +1,8 @@
 name: CI
 
+# Builds and tests every implementation. Each test suite includes the shared conformance runner
+# for tests/conformance/vectors, so a change to the vectors or the spec is checked everywhere.
+
 on:
   push:
     branches: [main]
@@ -9,6 +12,7 @@ on:
 env:
   DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  CARGO_TERM_COLOR: always
 
 jobs:
   csharp:
@@ -26,3 +30,90 @@ jobs:
         run: dotnet build Snowed.sln -c Release
       - name: Test
         run: dotnet test Snowed.Tests -c Release --no-build --logger "console;verbosity=normal"
+
+  swift:
+    name: Swift build and test
+    # macOS for Foundation parity with Apple platforms (Decimal, Date, UUID) and Swift Testing.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: swift --version
+      - name: Test
+        # Package.swift lives at the repository root.
+        run: swift test
+
+  go:
+    name: Go build and test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: implementations/go
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: implementations/go/go.mod
+          cache: false # no dependencies, so no go.sum to key a cache on
+      - name: Vet
+        run: go vet ./...
+      - name: Test
+        run: go test -v ./...
+
+  python:
+    name: Python ${{ matrix.python-version }} test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.13'] # oldest supported and current
+    defaults:
+      run:
+        working-directory: implementations/python
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install pytest
+        run: python -m pip install --quiet pytest
+      - name: Test
+        run: python -m pytest -v
+
+  kotlin:
+    name: Kotlin JVM test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: implementations/kotlin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      # gradle-wrapper.jar is not committed, so install the version the wrapper pins.
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.8'
+      - name: Test
+        run: gradle jvmTest --no-daemon
+
+  rust:
+    name: Rust build and test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: implementations/rust
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: implementations/rust
+      - name: Test (no features)
+        run: cargo test
+      - name: Test (serde)
+        run: cargo test --features serde
+      - name: Test (all features)
+        run: cargo test --all-features

@@ -1,0 +1,86 @@
+{
+  "suite": "Float64",
+  "cases": [
+    {
+      "name": "zero",
+      "description": "Float64 0.0",
+      "hex": "08 00 00 00 00 00 00 00 00",
+      "decoded": {
+        "type": "float64",
+        "value": 0.0
+      }
+    },
+    {
+      "name": "negative_zero",
+      "description": "Float64 -0.0 (sign bit set)",
+      "hex": "08 00 00 00 00 00 00 00 80",
+      "decoded": {
+        "type": "float64",
+        "value": "-0"
+      }
+    },
+    {
+      "name": "pi_approx",
+      "description": "Float64 3.14 (spec §5.5 example)",
+      "hex": "08 1F 85 EB 51 B8 1E 09 40",
+      "decoded": {
+        "type": "float64",
+        "value": 3.14
+      }
+    },
+    {
+      "name": "negative",
+      "description": "Float64 -1.5",
+      "hex": "08 00 00 00 00 00 00 F8 BF",
+      "decoded": {
+        "type": "float64",
+        "value": -1.5
+      }
+    },
+    {
+      "name": "max",
+      "description": "Largest finite Float64",
+      "hex": "08 FF FF FF FF FF FF EF 7F",
+      "decoded": {
+        "type": "float64",
+        "value": 1.7976931348623157e+308
+      }
+    },
+    {
+      "name": "min_subnormal",
+      "description": "Smallest positive subnormal Float64",
+      "hex": "08 01 00 00 00 00 00 00 00",
+      "decoded": {
+        "type": "float64",
+        "value": 5e-324
+      }
+    },
+    {
+      "name": "infinity",
+      "description": "Positive infinity",
+      "hex": "08 00 00 00 00 00 00 F0 7F",
+      "decoded": {
+        "type": "float64",
+        "value": "Infinity"
+      }
+    },
+    {
+      "name": "negative_infinity",
+      "description": "Negative infinity",
+      "hex": "08 00 00 00 00 00 00 F0 FF",
+      "decoded": {
+        "type": "float64",
+        "value": "-Infinity"
+      }
+    },
+    {
+      "name": "nan",
+      "description": "Quiet NaN (0x7FF8000000000000)",
+      "hex": "08 00 00 00 00 00 00 F8 7F",
+      "decoded": {
+        "type": "float64",
+        "value": "NaN"
+      }
+    }
+  ]
+}

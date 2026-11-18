@@ -52,7 +52,7 @@ internal class SnowedReader(private val data: ByteArray, private val maxDepth: I
 
     fun readLengthPrefixedString(): String {
         val bytes = readLengthPrefixedBytes()
-        return bytes.decodeToString(throwOnInvalidSequence = true)
+        return decodeUtf8(bytes, "String")
     }
 
     // ── SnowedValue ───────────────────────────────────────────────────────────
@@ -104,7 +104,7 @@ internal class SnowedReader(private val data: ByteArray, private val maxDepth: I
                         val keyLen = (takeByte().toInt() and 0xFF)
                         if (keyLen == 0x00) break
                         val keyBytes = takeBytes(keyLen)
-                        val key = keyBytes.decodeToString(throwOnInvalidSequence = true)
+                        val key = decodeUtf8(keyBytes, "Object key")
                         val valueType = readTypeByte()
                         if (valueType == 0xFF) break // Sentinel in value position
                         entries[key] = readValueWithType(valueType)
@@ -175,3 +175,10 @@ internal class SnowedReader(private val data: ByteArray, private val maxDepth: I
         }
     }
 }
+
+private fun decodeUtf8(bytes: ByteArray, what: String): String =
+    try {
+        bytes.decodeToString(throwOnInvalidSequence = true)
+    } catch (e: CharacterCodingException) {
+        throw SnowedDecodeException("$what is not valid UTF-8", e)
+    }

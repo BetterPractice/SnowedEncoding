@@ -1,0 +1,41 @@
+{
+  "suite": "DateTime",
+  "cases": [
+    {
+      "name": "epoch",
+      "description": "Unix epoch",
+      "hex": "09 00 00 00 00 00 00 00 00",
+      "decoded": {
+        "type": "datetime",
+        "value": 0
+      }
+    },
+    {
+      "name": "modern",
+      "description": "2023-11-14T22:13:20Z",
+      "hex": "09 00 00 80 56 FE BC 78 42",
+      "decoded": {
+        "type": "datetime",
+        "value": 1700000000000
+      }
+    },
+    {
+      "name": "with_millis",
+      "description": "2001-09-09T01:46:40.123Z",
+      "hex": "09 00 60 0F A2 94 1A 6D 42",
+      "decoded": {
+        "type": "datetime",
+        "value": 1000000000123
+      }
+    },
+    {
+      "name": "before_epoch",
+      "description": "1969-12-31T00:00:00Z (negative)",
+      "hex": "09 00 00 00 00 70 99 94 C1",
+      "decoded": {
+        "type": "datetime",
+        "value": -86400000
+      }
+    }
+  ]
+}

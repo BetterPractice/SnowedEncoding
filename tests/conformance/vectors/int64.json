@@ -1,0 +1,77 @@
+{
+  "suite": "Int64",
+  "cases": [
+    {
+      "name": "zero",
+      "description": "Int64 0",
+      "hex": "04 00 00 00 00 00 00 00 00",
+      "decoded": {
+        "type": "int64",
+        "value": 0
+      }
+    },
+    {
+      "name": "positive",
+      "description": "Int64 42 (spec §5.3 example)",
+      "hex": "04 2A 00 00 00 00 00 00 00",
+      "decoded": {
+        "type": "int64",
+        "value": 42
+      }
+    },
+    {
+      "name": "negative_one",
+      "description": "Int64 -1 (spec §5.3 example)",
+      "hex": "04 FF FF FF FF FF FF FF FF",
+      "decoded": {
+        "type": "int64",
+        "value": -1
+      }
+    },
+    {
+      "name": "byte_order",
+      "description": "Int64 0x0102030405060708 checks little-endian layout",
+      "hex": "04 08 07 06 05 04 03 02 01",
+      "decoded": {
+        "type": "int64",
+        "value": "72623859790382856"
+      }
+    },
+    {
+      "name": "max_safe_double",
+      "description": "Int64 2^53",
+      "hex": "04 00 00 00 00 00 00 20 00",
+      "decoded": {
+        "type": "int64",
+        "value": 9007199254740992
+      }
+    },
+    {
+      "name": "above_safe_double",
+      "description": "Int64 2^53 + 1 (not representable as a double)",
+      "hex": "04 01 00 00 00 00 00 20 00",
+      "decoded": {
+        "type": "int64",
+        "value": "9007199254740993"
+      }
+    },
+    {
+      "name": "max",
+      "description": "Int64 max",
+      "hex": "04 FF FF FF FF FF FF FF 7F",
+      "decoded": {
+        "type": "int64",
+        "value": "9223372036854775807"
+      }
+    },
+    {
+      "name": "min",
+      "description": "Int64 min",
+      "hex": "04 00 00 00 00 00 00 00 80",
+      "decoded": {
+        "type": "int64",
+        "value": "-9223372036854775808"
+      }
+    }
+  ]
+}
