@@ -9,12 +9,12 @@ let package = Package(
     targets: [
         .target(
             name: "Snowed",
-            path: "Sources/Snowed"
+            path: "implementations/swift/Sources/Snowed"
         ),
         .testTarget(
             name: "SnowedTests",
             dependencies: ["Snowed"],
-            path: "Tests/SnowedTests",
+            path: "implementations/swift/Tests/SnowedTests",
             resources: []
         ),
     ]

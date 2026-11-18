@@ -58,7 +58,7 @@ Base types define the parsing layout. Unknown type bytes round down to the neare
 
 ```bash
 # Swift
-cd implementations/swift && swift test
+swift test   # from repo root (Package.swift lives there)
 
 # C#
 cd implementations/csharp && dotnet test

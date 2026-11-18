@@ -69,6 +69,8 @@ See [../../spec/platform-limitations.md](../../spec/platform-limitations.md) for
 
 ## Running tests
 
+The `Package.swift` manifest lives at the repository root, so run tests from there:
+
 ```sh
 swift test
 ```
